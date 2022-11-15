@@ -1,0 +1,175 @@
+ANAND PRAKASH DWIVEDI 
+7312
+ASSIGNMENT NO 5
+
+Q)NAMED PL/SQL BLOCK: PL/SQL STORED PROCEDURE AND STORED FUNCTION. 
+WRITE A STORED PROCEDURE NAMELY PROC_GRADE FOR THE CATEGORIZATION OF STUDENT. IF MARKS SCORED BY STUDENTS IN EXAMINATION IS <=1500 AND MARKS>=990 THEN STUDENT WILL BE PLACED IN DISTINCTION CATEGORY IF MARKS SCORED ARE BETWEEN 989 AND 900 CATEGORY IS FIRST CLASS, IF MARKS 899 AND 825 CATEGORY IS HIGHER SECOND CLASS 
+
+WRITE A PL/SQL BLOCK TO USE PROCEDURE CREATED WITH ABOVE REQUIREMENT. 
+
+STUD_MARKS(NAME, TOTAL_MARKS) 
+RESULT(ROLL,NAME, CLASS) 
+
+
+
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| anand              |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use anand;
+
+Database changed
+mysql> create table marks(roll_no int, name varchar(20), total_marks int);
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> create table result(roll_no int, name varchar(20), class varchar(20));
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> insert into marks values
+    -> (1,"Amatya",1400),
+    -> (2,"Avnish",980),
+    -> (3,"Anand",880),
+    -> (4,"Saurabh",820),
+    -> (5,"Isha",700),
+    -> (6,"Shivani",1200),
+    -> (7,"Shalini",640);
+Query OK, 7 rows affected (0.05 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> delimiter //
+
+mysql> create procedure proc_grade(in marks int, out class char(10))
+    ->     begin
+    ->     if marks<=1500 and marks>=990 then set class='DIST';
+    ->     end if;
+    ->     if marks<=989 and marks>=900 then set class='FC';
+    ->     end if;
+    ->     if marks<=899 and marks>=825 then set class='HSC';
+    ->     end if;
+    ->     if marks<=824 and marks>=750 then set class='SC';
+    ->     end if;
+    ->     if marks<=749 and marks>=650 then set class='PC';
+    ->     end if;
+    ->     if marks < 650 then set class='fail';
+    ->     end if;
+    ->     end ;
+    -> //
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create function find_result(roll_in int) returns int deterministic
+    ->     begin
+    ->     declare fmarks int;
+    ->     declare grade char(10);
+    ->     declare stud_name char(10);
+    ->     select marks.total_marks,marks.name into fmarks, stud_name from
+    ->     marks where marks.roll_no=roll_in;
+    ->     call proc_grade(fmarks,@grade);
+    ->     insert into result values(roll_in,stud_name, @grade);
+    ->     return roll_in; end;//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select find_result(1)//
++----------------+
+| find_result(1) |
++----------------+
+|              1 |
++----------------+
+1 row in set (0.04 sec)
+
+mysql> select * from result;
+    -> //
++---------+--------+-------+
+| roll_no | name   | class |
++---------+--------+-------+
+|       1 | Amatya | DIST  |
++---------+--------+-------+
+1 row in set (0.00 sec)
+
+mysql> delimiter ;
+mysql> select find_result(2);
++----------------+
+| find_result(2) |
++----------------+
+|              2 |
++----------------+
+1 row in set (0.03 sec)
+
+mysql> select find_result(3);
++----------------+
+| find_result(3) |
++----------------+
+|              3 |
++----------------+
+1 row in set (0.02 sec)
+
+mysql> select find_result(4);
++----------------+
+| find_result(4) |
++----------------+
+|              4 |
++----------------+
+1 row in set (0.04 sec)
+
+mysql> select find_result(5);
++----------------+
+| find_result(5) |
++----------------+
+|              5 |
++----------------+
+1 row in set (0.04 sec)
+
+mysql> select find_result(6);
++----------------+
+| find_result(6) |
++----------------+
+|              6 |
++----------------+
+1 row in set (0.03 sec)
+
+mysql> select find_result(7);
++----------------+
+| find_result(7) |
++----------------+
+|              7 |
++----------------+
+1 row in set (0.03 sec)
+
+mysql> select * from result;
++---------+---------+-------+
+| roll_no | name    | class |
++---------+---------+-------+
+|       1 | Amatya  | DIST  |
+|       2 | Avnish  | FC    |
+|       3 | Anand   | HSC   |
+|       4 | Saurabh | SC    |
+|       5 | Isha    | PC    |
+|       6 | Shivani | DIST  |
+|       7 | Shalini | fail  |
++---------+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select * from marks;
++---------+---------+-------------+
+| roll_no | name    | total_marks |
++---------+---------+-------------+
+|       1 | Amatya  |        1400 |
+|       2 | Avnish  |         980 |
+|       3 | Anand   |         880 |
+|       4 | Saurabh |         820 |
+|       5 | Isha    |         700 |
+|       6 | Shivani |        1200 |
+|       7 | Shalini |         640 |
++---------+---------+-------------+
+7 rows in set (0.00 sec)
+
+mysql> notee;

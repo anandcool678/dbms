@@ -1,0 +1,168 @@
+ASSIGNMENT NO. 4
+ANAND PRAKASH DWIVEDI 
+7312
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| anand              |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use anand;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+
+Q) WRITE A PL/SQL CODE BLOCK TO CALCULATE THE AREA OF A CIRCLE FOR A VALUE OF RADIUS VARYING FROM 5 TO 9. STORE THE RADIUS AND THE CORRESPONDING VALUES OF CALCULATED AREA IN AN EMPTY TABLE NAMED AREAS, CONSISTING OF TWO COLUMNS, RADIUS AND AREA.
+
+mysql> delimiter /
+
+mysql> create table areas(rad int, area decimal(5,2));
+    -> /
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> create procedure calArea(in var1 int, out var2 decimal(5,2)) begin set var2 = var1*var1*3.14; insert into areas values(var1,var2); end/
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call calArea(5,@a1);/
+Query OK, 1 row affected (0.05 sec)
+
+mysql> call calArea(6,@a1);/
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call calArea(7,@a1);/
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call calArea(8,@a1);/
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call calArea(9,@a1);/
+Query OK, 1 row affected (0.04 sec)
+
+mysql> delimiter ;
+mysql> select * from areas;
++------+--------+
+| rad  | area   |
++------+--------+
+|    5 |  78.50 |
+|    6 | 113.04 |
+|    7 | 153.86 |
+|    8 | 200.96 |
+|    9 | 254.34 |
++------+--------+
+5 rows in set (0.00 sec)
+
+
+
+				OR
+				
+UNNAMED PL/SQL CODE BLOCK: USE OF CONTROL STRUCTURE AND EXCEPTION HANDLING IS MANDATORY. 
+SUGGESTED PROBLEM STATEMENT: 
+CONSIDER TABLES: 
+1. BORROWER(ROLL_NO, NAME, DATEOFISSUE, NAMEOFBOOK, STATUS) 
+2. FINE(ROLL_NO,DATE,AMT) 
+ACCEPT ROLL_NO & NAMEOFBOOK FROM USER. 
+    • CHECK THE NUMBER OF DAYS (FROM DATE OF ISSUE), 
+    • IF DAYS ARE BETWEEN 15 TO 30 THEN FINE AMOUNT WILL BE RS 5PER DAY. 
+    • IF NO. OF DAYS>30, PER DAY FINE WILL BE RS 50 PER DAY & FOR DAYS LESS THAN 30, RS. 5 PER DAY. 
+    • AFTER SUBMITTING THE BOOK, STATUS WILL CHANGE FROM I TO R. 
+    • IF CONDITION OF FINE IS TRUE, THEN DETAILS WILL BE STORED INTO FINE TABLE. 
+    • ALSO HANDLES THE EXCEPTION BY NAMED EXCEPTION HANDLER OR USER DEFINE EXCEPTION HANDLER. 
+    
+    
+    
+    
+
+mysql> create table borrower(rollno int primary key,name varchar(20),dateofissue date,nameofbook varchar(20),status varchar(20));
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> create table fine(rollno int,foreign key(rollno) references borrower(rollno),returndate date, amount int);
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> insert into borrower values(1,'abc','2021-06-01','SEPM','I');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into borrower values(2,'xyz','2021-05-01','OOP','I');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into borrower values(3,'pqr','2021-06-15','DBMS','I');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into borrower values(4,'def','2021-06-30','DSA','I');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into borrower values(5,'lmn','2021-07-05','ADS','I');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from borrower;
++--------+------+-------------+------------+--------+
+| rollno | name | dateofissue | nameofbook | status |
++--------+------+-------------+------------+--------+
+|      1 | abc  | 2021-06-01  | SEPM       | I      |
+|      2 | xyz  | 2021-05-01  | OOP        | I      |
+|      3 | pqr  | 2021-06-15  | DBMS       | I      |
+|      4 | def  | 2021-06-30  | DSA        | I      |
+|      5 | lmn  | 2021-07-05  | ADS        | I      |
++--------+------+-------------+------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> delimiter $
+mysql> create procedure calc_fine_lib(in roll int)
+    -> begin
+    -> declare fine1 int;
+    -> declare noofdays int;
+    -> declare issuedate date;
+    -> declare exit handler for SQLEXCEPTION select 'create table definition';
+    -> select dateofissue into issuedate from borrower where rollno=roll;
+    -> select datediff(curdate(),issuedate) into noofdays;
+    -> if noofdays>15 and noofdays<=30 then
+    -> set fine1=noofdays*5;
+    -> insert into fine values(roll,curdate(),fine1);
+    -> elseif noofdays>30 then
+    -> set fine1=((noofdays-30)*50) + 30*5;
+    -> insert into fine values(roll,curdate(),fine1);
+    -> else
+    -> insert into fine values(roll,curdate(),0);
+    -> end if;
+    -> update borrower set status='R' where rollno=roll;
+    -> end $
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> delimiter ;
+mysql> call calc_fine_lib(1);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> call calc_fine_lib(2);
+Query OK, 1 row affected (0.13 sec)
+
+mysql> call calc_fine_lib(3);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> call calc_fine_lib(4);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> call calc_fine_lib(5);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from fine;
++--------+------------+--------+
+| rollno | returndate | amount |
++--------+------------+--------+
+|      1 | 2022-08-27 |  21250 |
+|      2 | 2022-08-27 |  22800 |
+|      3 | 2022-08-27 |  20550 |
+|      4 | 2022-08-27 |  19800 |
+|      5 | 2022-08-27 |  19550 |
++--------+------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> notee

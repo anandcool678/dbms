@@ -1,0 +1,427 @@
+								ASSIGNMENT NO- 3
+								ANAND PRAKASH DWIVEDI
+								7312
+
+
+
+mysql> create database anand;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> use anand;
+Database changed
+
+CREATED TABLE PACK_GRADES(GRADE_ID,GRADE_NAME,MIN_PRICE,MAX_PRICE)
+
+mysql> create table pack_grades(grade_id int not null primary key,grade_name varchar(20),min_price int,max_price int);
+Query OK, 0 rows affected (0.05 sec)
+
+
+PACKAGES(PACK_ID,SPEED,STRT_DATE,MONTHLY_PAYMENT,SECTOR_ID)
+
+mysql> create table packages(pack_id int primary key, speed int,strt_date date,monthly_payment int,sector_id varchar(5));
+Query OK, 0 rows affected (0.05 sec)
+
+
+CUSTOMERS(CUST_ID,FIRSTNAME,LASTNAME,BIRTHDATE,JOINDATE,CITY,STATE,STREET,MAIN_PHONE_NUM,SECONDARY_PHN_NO,FAX,MONTHLY_DISCOUNT,PACK_ID)
+
+mysql> create table customers(cust_id int primary key, firstname varchar(20),lastname varchar(20),birthdate date,joindate date,city varchar(20),street varchar(20),main_phone int(12),secondary_phn int(12),fax varchar(20),monthly_discount int,pack_id int);
+Query OK, 0 rows affected, 2 warnings (0.05 sec)
+
+
+SECTORS(SECTOR_ID,SECTOR_NAME)
+mysql> create table sectors(sector_id varchar(5) primary key,sector_name varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+INSERTING VALUES IN PACK_GRADES
+mysql> desc pack_grades;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| grade_id   | int         | NO   | PRI | NULL    |       |
+| grade_name | varchar(20) | YES  |     | NULL    |       |
+| min_price  | int         | YES  |     | NULL    |       |
+| max_price  | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into pack_grades values (1,"Aaa",20,100), (2,"bbb",40,200);
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into pack_grades values (3,"ccc",30,300), (4,"ddd",50,500),(5,"eee",60,700),(6,"fff",56,345);
+Query OK, 4 rows affected (0.02 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+INSERTING VALUES IN PACKAGES
+mysql> desc packages;
++-----------------+------------+------+-----+---------+-------+
+| Field           | Type       | Null | Key | Default | Extra |
++-----------------+------------+------+-----+---------+-------+
+| pack_id         | int        | NO   | PRI | NULL    |       |
+| speed           | int        | YES  |     | NULL    |       |
+| strt_date       | date       | YES  |     | NULL    |       |
+| monthly_payment | int        | YES  |     | NULL    |       |
+| sector_id       | varchar(5) | YES  |     | NULL    |       |
++-----------------+------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> insert into packages values
+    -> (1,60,"2021-11-21",5000,"1A"),
+    -> (2,50,"2021-11-11",6000,"2A"),
+    -> (3,55,"2021-10-11",6500,"3A"),
+    -> (4,45,"2021-09-11",5500,"4A");
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+INSERTING VALUES INTO CUSTOMERS
+mysql> desc customers;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| cust_id          | int         | NO   | PRI | NULL    |       |
+| firstname        | varchar(20) | YES  |     | NULL    |       |
+| lastname         | varchar(20) | YES  |     | NULL    |       |
+| birthdate        | date        | YES  |     | NULL    |       |
+| joindate         | date        | YES  |     | NULL    |       |
+| city             | varchar(20) | YES  |     | NULL    |       |
+| street           | varchar(20) | YES  |     | NULL    |       |
+| main_phone       | int         | YES  |     | NULL    |       |
+| secondary_phn    | int         | YES  |     | NULL    |       |
+| fax              | varchar(20) | YES  |     | NULL    |       |
+| monthly_discount | int         | YES  |     | NULL    |       |
+| pack_id          | int         | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+12 rows in set (0.00 sec)
+
+mysql> insert into customers values(1,"Anand","Dwivedi","2001-11-20","2021-11-20","Mau","123A",75186910,97931212,"1ADF234",500,1), (2,"Amit","Kanase","2001-11-04","2020-09-11","Satara","234B",80102903,89991904,"3BHG324",600,2), (3,"Amatya","Shekhar","2001-01-24","2021-06-11","vaishali","546C",91991369,62013544,"5ABG657",550,3), (4,"Avnish","Prajapat","2001-06-22","2021-08-09","Ratangarh","786D",74009362,80775769,"7UHG897",450,4);
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+INSERTING VALUES INTO SECTORS
+mysql> desc sectors;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| sector_id   | varchar(5)  | NO   | PRI | NULL    |       |
+| sector_name | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into sectors values
+    -> ("1A","Dwivedi"),
+    -> ("2A","Kanase"),
+    -> ("3A","Shekhar"),
+    -> ("4A","Prajapat");
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+DISPLAY ALL VALUES FROM PACK_GRADES
+
+mysql> select * from pack_grades;
++----------+------------+-----------+-----------+
+| grade_id | grade_name | min_price | max_price |
++----------+------------+-----------+-----------+
+|        1 | Aaa        |        20 |       100 |
+|        2 | bbb        |        40 |       200 |
+|        3 | ccc        |        30 |       300 |
+|        4 | ddd        |        50 |       500 |
+|        5 | eee        |        60 |       700 |
+|        6 | fff        |        56 |       345 |
++----------+------------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+
+DISPLAY ALL VALUES FROM PACKAGES
+
+mysql> select * from packages;
++---------+-------+------------+-----------------+-----------+
+| pack_id | speed | strt_date  | monthly_payment | sector_id |
++---------+-------+------------+-----------------+-----------+
+|       1 |    60 | 2021-11-21 |            5000 | 1A        |
+|       2 |    50 | 2021-11-11 |            6000 | 2A        |
+|       3 |    55 | 2021-10-11 |            6500 | 3A        |
+|       4 |    45 | 2021-09-11 |            5500 | 4A        |
++---------+-------+------------+-----------------+-----------+
+4 rows in set (0.00 sec)
+
+
+DISPLAY ALL VALUES FROM CUSTOMERS
+
+mysql> select * from customers;
++---------+-----------+----------+------------+------------+-----------+--------+------------+---------------+---------+------------------+---------+
+| cust_id | firstname | lastname | birthdate  | joindate   | city      | street | main_phone | secondary_phn | fax     | monthly_discount | pack_id |
++---------+-----------+----------+------------+------------+-----------+--------+------------+---------------+---------+------------------+---------+
+|       1 | Anand     | Dwivedi  | 2001-11-20 | 2021-11-20 | Mau       | 123A   |   75186910 |      97931212 | 1ADF234 |              500 |       1 |
+|       2 | Amit      | Kanase   | 2001-11-04 | 2020-09-11 | Satara    | 234B   |   80102903 |      89991904 | 3BHG324 |              600 |       2 |
+|       3 | Amatya    | Shekhar  | 2001-01-24 | 2021-06-11 | vaishali  | 546C   |   91991369 |      62013544 | 5ABG657 |              550 |       3 |
+|       4 | Avnish    | Prajapat | 2001-06-22 | 2021-08-09 | Ratangarh | 786D   |   74009362 |      80775769 | 7UHG897 |              450 |       4 |
++---------+-----------+----------+------------+------------+-----------+--------+------------+---------------+---------+------------------+---------+
+4 rows in set (0.00 sec)
+
+
+DISPLAY ALL VALUES FROM SECTORS
+
+mysql> select * from sectors;
++-----------+-------------+
+| sector_id | sector_name |
++-----------+-------------+
+| 1A        | Dwivedi     |
+| 2A        | Kanase      |
+| 3A        | Shekhar     |
+| 4A        | Prajapat    |
++-----------+-------------+
+4 rows in set (0.00 sec)
+
+
+INNER JOIN
+1. CUSTOMERS AND INTERNET PACKAGES (CUSTOMERS & PACKAGES TABLES) –
+
+A. WRITE A QUERY TO DISPLAY FIRST NAME, LAST NAME, PACKAGE NUMBER AND INTERNET SPEED FOR ALL CUSTOMERS.
+
+mysql> select customers.firstname,customers.lastname,packages.pack_id,packages.speed from customers inner join packages on customers.pack_id=packages.pack_id;
++-----------+----------+---------+-------+
+| firstname | lastname | pack_id | speed |
++-----------+----------+---------+-------+
+| Anand     | Dwivedi  |       1 |    60 |
+| Amit      | Kanase   |       2 |    50 |
+| Amatya    | Shekhar  |       3 |    55 |
+| Avnish    | Prajapat |       4 |    45 |
++-----------+----------+---------+-------+
+4 rows in set (0.00 sec)
+
+
+B. WRITE A QUERY TO DISPLAY FIRST NAME, LAST NAME, PACKAGE NUMBER AND INTERNET SPEED FOR ALL CUSTOMERS WHOSE PACKAGE NUMBER EQUALS 1 OR 2. ORDER THE QUERY IN ASCENDING ORDER BY LAST NAME.
+
+mysql> select customers.firstname,customers.lastname,packages.pack_id,packages.speed from customers inner join packages on customers.pack_id=packages.pack_id && customers.pack_id=1 or customers.pack_id=2 order by firstname asc;
++-----------+----------+---------+-------+
+| firstname | lastname | pack_id | speed |
++-----------+----------+---------+-------+
+| Amit      | Kanase   |       1 |    60 |
+| Amit      | Kanase   |       2 |    50 |
+| Amit      | Kanase   |       3 |    55 |
+| Amit      | Kanase   |       4 |    45 |
+| Anand     | Dwivedi  |       1 |    60 |
++-----------+----------+---------+-------+
+5 rows in set, 1 warning (0.00 sec)
+
+
+2. INTERNET PACKAGES AND SECTORS –
+
+A. DISPLAY THE PACKAGE NUMBER, INTERNET SPEED, MONTHLY PAYMENT AND SECTOR NAME FOR ALL PACKAGES (PACKAGES AND SECTORS TABLES).
+        
+mysql> select customers.firstname,customers.lastname,packages.pack_id,packages.speed from customers inner join packages on customers.pack_id=packages.pack_id && (packages.pack_id=1 or packages.pack_id=2) order by firstname asc;
++-----------+----------+---------+-------+
+| firstname | lastname | pack_id | speed |
++-----------+----------+---------+-------+
+| Amit      | Kanase   |       2 |    50 |
+| Anand     | Dwivedi  |       1 |    60 |
++-----------+----------+---------+-------+
+2 rows in set, 1 warning (0.00 sec)
+
+
+B. DISPLAY THE CUSTOMER NAME, PACKAGE NUMBER, INTERNET SPEED, MONTHLY PAYMENT AND SECTOR NAME FOR ALL CUSTOMERS (CUSTOMERS, PACKAGES AND SECTORS TABLES).
+  
+mysql> select customers.firstname,customers.lastname,packages.pack_id,packages.speed,packages.monthly_payment,sectors.sector_name from ((packages inner join customers on customers.pack_id=packages.pack_id) inner join sectors on packages.sector_id=sectors.sector_id);
++-----------+----------+---------+-------+-----------------+-------------+
+| firstname | lastname | pack_id | speed | monthly_payment | sector_name |
++-----------+----------+---------+-------+-----------------+-------------+
+| Anand     | Dwivedi  |       1 |    60 |            5000 | Dwivedi     |
+| Amit      | Kanase   |       2 |    50 |            6000 | Kanase      |
+| Amatya    | Shekhar  |       3 |    55 |            6500 | Shekhar     |
+| Avnish    | Prajapat |       4 |    45 |            5500 | Prajapat    |
++-----------+----------+---------+-------+-----------------+-------------+
+4 rows in set (0.00 sec)
+
+
+
+C. DISPLAY THE CUSTOMER NAME, PACKAGE NUMBER, INTERNET SPEED, MONTHLY PAYMENT AND SECTOR NAME FOR ALL CUSTOMERS IN THE DWIVEDI SECTOR (CUSTOMERS, PACKAGES AND SECTORS TABLES).
+
+mysql> select customers.firstname,customers.lastname,packages.pack_id,packages.speed,packages.monthly_payment,sectors.sector_name from ((packages inner join customers on customers.pack_id=packages.pack_id) inner join sectors on packages.sector_id=sectors.sector_id) where sectors.sector_name="Dwivedi";
++-----------+----------+---------+-------+-----------------+-------------+
+| firstname | lastname | pack_id | speed | monthly_payment | sector_name |
++-----------+----------+---------+-------+-----------------+-------------+
+| Anand     | Dwivedi  |       1 |    60 |            5000 | Dwivedi     |
++-----------+----------+---------+-------+-----------------+-------------+
+1 row in set (0.01 sec)
+
+
+
+3. DISPLAY THE LAST NAME, FIRST NAME, JOIN DATE, PACKAGE NUMBER, INTERNET SPEED AND SECTOR NAME FOR ALL CUSTOMERS IN THE PRIVATE SECTOR WHO JOINED THE COMPANY IN THE YEAR 2021.
+mysql> select customers.firstname,customers.lastname,packages.pack_id,packages.speed,packages.monthly_payment,sectors.sector_name from ((packages inner join customers on customers.pack_id=packages.pack_id) inner join sectors on packages.sector_id=sectors.sector_id) where sectors.sector_name="Dwivedi" && year(customers.joindate)=2021;
++-----------+----------+---------+-------+-----------------+-------------+
+| firstname | lastname | pack_id | speed | monthly_payment | sector_name |
++-----------+----------+---------+-------+-----------------+-------------+
+| Anand     | Dwivedi  |       1 |    60 |            5000 | Dwivedi     |
++-----------+----------+---------+-------+-----------------+-------------+
+1 row in set, 1 warning (0.00 sec)
+
+
+// UPDATING TABLE TO RUN REMAINING QUERIES
+mysql> update pack_grades set max_price = 800 where grade_id=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update pack_grades set max_price = 8000 where grade_id=2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update pack_grades set max_price = 5000 where grade_id=3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from pack_grades;
++----------+------------+-----------+-----------+
+| grade_id | grade_name | min_price | max_price |
++----------+------------+-----------+-----------+
+|        1 | Aaa        |        20 |       800 |
+|        2 | bbb        |        40 |      8000 |
+|        3 | ccc        |        30 |      5000 |
+|        4 | ddd        |        50 |       500 |
+|        5 | eee        |        60 |       700 |
+|        6 | fff        |        56 |       345 |
++----------+------------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> update pack_grades set max_price = 800 where grade_id=2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+	NON EQUI JOIN
+    
+ 4. DISPLAY THE PACKAGE NUMBER, INTERNET SPEED, MONTHLY PAYMENT AND PACKAGE GRADE FOR ALL PACKAGES  WHOSE MONTHLY PAYMENT IS BETWEEN MIN_PRICE AND MAX_PRICE(PACKAGES AND PACK_GRADES TABLES).
+ 
+mysql> select packages.pack_id,packages.speed,packages.monthly_payment,pack_grades.grade_name from packages inner join pack_grades on packages.monthly_payment between pack_grades.min_price and pack_grades.max_price;
++---------+-------+-----------------+------------+
+| pack_id | speed | monthly_payment | grade_name |
++---------+-------+-----------------+------------+
+|       1 |    60 |            5000 | ccc        |
++---------+-------+-----------------+------------+
+1 row in set (0.00 sec)
+
+
+
+OUTER JOIN
+5. CUSTOMERS AND INTERNET PACKAGES (CUSTOMERS AND PACKAGES TABLES)
+A. DISPLAY THE FIRST NAME, LAST NAME, INTERNET SPEED AND MONTHLY PAYMENT FOR ALL CUSTOMERS. USE INNER JOIN TO SOLVE THIS EXERCISE.
+           
+mysql> select customers.firstname,customers.lastname,packages.speed,packages.monthly_payment from customers right outer join packages on customers.pack_id=packages.pack_id;
++-----------+----------+-------+-----------------+
+| firstname | lastname | speed | monthly_payment |
++-----------+----------+-------+-----------------+
+| Anand     | Dwivedi  |    60 |            5000 |
+| Amit      | Kanase   |    50 |            6000 |
+| Amatya    | Shekhar  |    55 |            6500 |
+| Avnish    | Prajapat |    45 |            5500 |
++-----------+----------+-------+-----------------+
+4 rows in set (0.00 sec)
+
+//	UPDATING TABLE AGAIN
+mysql> insert into packages values(5,34,"2021-11-30",3500,"7A");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into packages(pack_id,sector_id) values(9,"9A");
+Query OK, 1 row affected (0.01 sec)
+
+
+B. MODIFY LAST QUERY TO DISPLAY ALL CUSTOMERS, INCLUDING THOSE WITHOUT ANY INTERNET PACKAGE.
+
+mysql> select customers.firstname,customers.lastname,packages.speed,packages.monthly_payment from customers left outer join packages on customers.pack_id=packages.pack_id;
++-----------+----------+-------+-----------------+
+| firstname | lastname | speed | monthly_payment |
++-----------+----------+-------+-----------------+
+| Anand     | Dwivedi  |    60 |            5000 |
+| Amit      | Kanase   |    50 |            6000 |
+| Amatya    | Shekhar  |    55 |            6500 |
+| Avnish    | Prajapat |    45 |            5500 |
++-----------+----------+-------+-----------------+
+4 rows in set (0.00 sec)
+
+
+mysql> insert into packages(pack_id,sector_id) values(10,"1A");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into customers values(10,"Saurabh","Joshi","2001-07-12","2022-01-12","dehradun","8HJ",987654321,68675796,"98HYGJ8",700,10);
+Query OK, 1 row affected (0.01 sec)
+
+C. MODIFY LAST QUERY TO DISPLAY ALL PACKAGES, INCLUDING THOSE WITHOUT ANY CUSTOMERS.
+            
+mysql> select customers.firstname,customers.lastname,packages.speed,packages.monthly_payment from customers left outer join packages on customers.pack_id=packages.pack_id;
++-----------+----------+-------+-----------------+
+| firstname | lastname | speed | monthly_payment |
++-----------+----------+-------+-----------------+
+| Anand     | Dwivedi  |    60 |            5000 |
+| Amit      | Kanase   |    50 |            6000 |
+| Amatya    | Shekhar  |    55 |            6500 |
+| Avnish    | Prajapat |    45 |            5500 |
+| Saurabh   | Joshi    |  NULL |            NULL |
++-----------+----------+-------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into customers(cust_id,pack_id) values(12,12);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into packages(pack_id,sector_id) values(12,"1A");
+Query OK, 1 row affected (0.01 sec)
+
+
+
+D. MODIFY LAST QUERY TO DISPLAY ALL PACKAGES AND ALL CUSTOMERS.
+
+mysql> select customers.firstname,customers.lastname,packages.speed,packages.monthly_payment from customers right outer join packages on customers.pack_id=packages.pack_id union select customers.firstname,customers.lastname,packages.speed,packages.monthly_payment from customers left outer join packages on packages.pack_id = customers.pack_id;
++-----------+----------+-------+-----------------+
+| firstname | lastname | speed | monthly_payment |
++-----------+----------+-------+-----------------+
+| Anand     | Dwivedi  |    60 |            5000 |
+| Amit      | Kanase   |    50 |            6000 |
+| Amatya    | Shekhar  |    55 |            6500 |
+| Avnish    | Prajapat |    45 |            5500 |
+| NULL      | NULL     |    34 |            3500 |
+| NULL      | NULL     |  NULL |            NULL |
+| Saurabh   | Joshi    |  NULL |            NULL |
++-----------+----------+-------+-----------------+
+7 rows in set (0.02 sec)
+
+
+SELF JOIN
+6. DISPLAY THE LAST NAME, FIRST NAME AND PACKAGE NUMBER FOR ALL CUSTOMERS WHO HAVE THE SAME PACKAGE NUMBER AS CUSTOMER  LAST NAME AS ‘DWIVEDI’ (CUSTOMERS TABLE).
+            
+mysql> select A.firstname,A.lastname,A.pack_id from customers A join customers B on A.pack_id = B.pack_id and B.lastname="Dwivedi";
++-----------+----------+---------+
+| firstname | lastname | pack_id |
++-----------+----------+---------+
+| Anand     | Dwivedi  |       1 |
++-----------+----------+---------+
+1 row in set (0.01 sec)
+
+
+7. DISPLAY THE LAST NAME, FIRST NAME AND MONTHLY DISCOUNT FOR ALL CUSTOMERS WHOSE MONTHLY DISCOUNT IS LOWER THAN THE MONTHLY DISCOUNT OF EMPLOYEE NUMBER 2 (CUSTOMERS TABLE).
+
+
+mysql> select A.firstname,A.lastname,A.monthly_discount from customers A join customers B on B.cust_id=2 and A.monthly_discount<B.monthly_discount;
++-----------+----------+------------------+
+| firstname | lastname | monthly_discount |
++-----------+----------+------------------+
+| Anand     | Dwivedi  |              500 |
+| Amatya    | Shekhar  |              550 |
+| Avnish    | Prajapat |              450 |
++-----------+----------+------------------+
+3 rows in set (0.01 sec)
+
+
+8. DISPLAY THE PACKAGE NUMBER AND INTERNET SPEED FOR ALL PACKAGES WHOSE INTERNET SPEED IS EQUAL TO THE INTERNET SPEED OF PACKAGE NUMBER 2 (PACKAGES TABLE).
+
+mysql> select A.pack_id,A.speed from packages A join packages B on B.pack_id=2 and A.speed<B.speed;
++---------+-------+
+| pack_id | speed |
++---------+-------+
+|       4 |    45 |
+|       5 |    34 |
++---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> notee;

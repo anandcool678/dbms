@@ -1,0 +1,285 @@
+mysql> mysql> use anand;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed, 1 warning
+mysql> show tables;
++-----------------+
+| Tables_in_anand |
++-----------------+
+| OBH             |
+| accounts        |
+| emp             |
+| emp_view        |
++-----------------+
+4 rows in set (0.00 sec)
+Creating table Employee
+mysql> create table employee(Eid int, FName varchar(20), Address varchar(30), Salary int, Commision int default null);
+Query OK, 0 rows affected (0.30 sec)
+
+Inserting data into Table employee
+
+mysql> insert into employee values(1,"Amit","Pune",35000,5000);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employee values(2,"Sneha","Pune",25000,default);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employee values(3,"Savita","Nasik",28000,3000),(4,"Pooja","Mumbai",19000,default);
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into employee values(
+    -> 5,"Sagar","Mumbai",25000,3000),
+    -> (6,"Rohit","Jaipur",40000,default),
+    -> (7,"Poonam","Patna",45000,2000),
+    -> (8,"Arjun","Delhi",20000,900),
+    -> (0,"Rahul","Nagpur",60000,5000),
+    -> (10,"Dulqeer","Kochi",30000,1000);
+Query OK, 6 rows affected (0.03 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+Creating second table project
+
+mysql> create table project(PrNo int, Address varchar(30));
+Query OK, 0 rows affected (0.22 sec)
+
+INSERTING VALUES IN TABLE PROJECT
+
+mysql> insert into project values (10,"Mumbai"), (20,"Pune"), (30,"Jalgoan"),
+(40,"Nagpur"),(50,"Delhi"),(60,"Kochi"),(70,"Pune"),(80,"Nasik");
+Query OK, 8 rows affected (0.05 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++------+---------+---------+--------+-----------+
+| Eid  | FName   | Address | Salary | Commision |
++------+---------+---------+--------+-----------+
+|    1 | Amit    | Pune    |  35000 |      5000 |
+|    2 | Sneha   | Pune    |  25000 |      NULL |
+|    3 | Savita  | Nasik   |  28000 |      3000 |
+|    4 | Pooja   | Mumbai  |  19000 |      NULL |
+|    5 | Sagar   | Mumbai  |  25000 |      3000 |
+|    6 | Rohit   | Jaipur  |  40000 |      NULL |
+|    7 | Poonam  | Patna   |  45000 |      2000 |
+|    8 | Arjun   | Delhi   |  20000 |       900 |
+|    0 | Rahul   | Nagpur  |  60000 |      5000 |
+|   10 | Dulqeer | Kochi   |  30000 |      1000 |
++------+---------+---------+--------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from project;
++------+---------+
+| PrNo | Address |
++------+---------+
+|   10 | Mumbai  |
+|   20 | Pune    |
+|   30 | Jalgoan |
+|   40 | Nagpur  |
+|   50 | Delhi   |
+|   60 | Kochi   |
+|   70 | Pune    |
+|   80 | Nasik   |
++------+---------+
+8 rows in set (0.00 sec)
+
+
+EXECUTION OF QUERIES START
+
+1) Find different locations from where employees belong to?
+
+mysql> select Address from employee group by Address;
++---------+
+| Address |
++---------+
+| Delhi   |
+| Jaipur  |
+| Kochi   |
+| Mumbai  |
+| Nagpur  |
+| Nasik   |
+| Patna   |
+| Pune    |
++---------+
+8 rows in set (0.00 sec)
+
+2) What are maximum ,minimum salary, average salary and sum of all salaries?
+
+mysql> select max(Salary),min(Salary),avg(Salary),sum(Salary) from employee;
++-------------+-------------+-------------+-------------+
+| max(Salary) | min(Salary) | avg(Salary) | sum(Salary) |
++-------------+-------------+-------------+-------------+
+|       60000 |       19000 |  32700.0000 |      327000 |
++-------------+-------------+-------------+-------------+
+1 row in set (0.00 sec)
+
+3) Display the content of employee table according to the ascending order of salary amount.
+
+mysql> select * from employee order by Salary asc;
++------+---------+---------+--------+-----------+
+| Eid  | FName   | Address | Salary | Commision |
++------+---------+---------+--------+-----------+
+|    4 | Pooja   | Mumbai  |  19000 |      NULL |
+|    8 | Arjun   | Delhi   |  20000 |       900 |
+|    2 | Sneha   | Pune    |  25000 |      NULL |
+|    5 | Sagar   | Mumbai  |  25000 |      3000 |
+|    3 | Savita  | Nasik   |  28000 |      3000 |
+|   10 | Dulqeer | Kochi   |  30000 |      1000 |
+|    1 | Amit    | Pune    |  35000 |      5000 |
+|    6 | Rohit   | Jaipur  |  40000 |      NULL |
+|    7 | Poonam  | Patna   |  45000 |      2000 |
+|    0 | Rahul   | Nagpur  |  60000 |      5000 |
++------+---------+---------+--------+-----------+
+10 rows in set (0.00 sec)
+
+4) Find the name of employee who lived in Nasik or Pune city.
+
+mysql> select FName from employee where Address="Nasik" or Address="Pune";
++--------+
+| FName  |
++--------+
+| Amit   |
+| Sneha  |
+| Savita |
++--------+
+3 rows in set (0.00 sec)
+
+
+5) Find the name of employees who does not get commission.
+
+mysql> select * from employee where COmmision IS NULL;
++------+-------+---------+--------+-----------+
+| Eid  | FName | Address | Salary | Commision |
++------+-------+---------+--------+-----------+
+|    2 | Sneha | Pune    |  25000 |      NULL |
+|    4 | Pooja | Mumbai  |  19000 |      NULL |
+|    6 | Rohit | Jaipur  |  40000 |      NULL |
++------+-------+---------+--------+-----------+
+3 rows in set (0.00 sec)
+
+6) Change the city of Amit to Nashik.
+
+mysql> update employee set Address = "Nasik" where Eid = 1;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+7)Find the information of employees whose name starts with ‘A’.
+
+mysql> select * from employee where FName like "A%";
++------+-------+---------+--------+-----------+
+| Eid  | FName | Address | Salary | Commision |
++------+-------+---------+--------+-----------+
+|    1 | Amit  | Nasik   |  35000 |      5000 |
+|    8 | Arjun | Delhi   |  20000 |       900 |
++------+-------+---------+--------+-----------+
+2 rows in set (0.00 sec)
+
+8)Find the count of staff from Mumbai.
+
+mysql> select count(*) from employee where Address="Mumbai";
++----------+
+| count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.00 sec)
+
+
+9) Find the count of staff from each city
+
+mysql> select Address,count(*) from employee group by Address;
++---------+----------+
+| Address | count(*) |
++---------+----------+
+| Delhi   |        1 |
+| Jaipur  |        1 |
+| Kochi   |        1 |
+| Mumbai  |        2 |
+| Nagpur  |        1 |
+| Nasik   |        2 |
+| Patna   |        1 |
+| Pune    |        1 |
++---------+----------+
+8 rows in set (0.00 sec)
+
+
+10) Find the address from where employees are belonging as well as where projects are going on.
+
+mysql> select  Address from employee union select Address from project;
++---------+
+| Address |
++---------+
+| Nasik   |
+| Pune    |
+| Mumbai  |
+| Jaipur  |
+| Patna   |
+| Delhi   |
+| Nagpur  |
+| Kochi   |
+| Jalgoan |
++---------+
+9 rows in set (0.00 sec)
+
+11) Find city wise minimum salary.
+
+mysql> select min(Salary),Address from employee group by Address;
++-------------+---------+
+| min(Salary) | Address |
++-------------+---------+
+|       20000 | Delhi   |
+|       40000 | Jaipur  |
+|       30000 | Kochi   |
+|       19000 | Mumbai  |
+|       60000 | Nagpur  |
+|       28000 | Nasik   |
+|       45000 | Patna   |
+|       25000 | Pune    |
++-------------+---------+
+8 rows in set (0.00 sec)
+
+
+12) Find city wise maximum salary having maximum salary greater than 26000
+
+mysql> select max(Salary),Address from employee where Salary>26000 group by Address;
++-------------+---------+
+| max(Salary) | Address |
++-------------+---------+
+|       40000 | Jaipur  |
+|       30000 | Kochi   |
+|       60000 | Nagpur  |
+|       35000 | Nasik   |
+|       45000 | Patna   |
++-------------+---------+
+5 rows in set (0.00 sec)
+
+
+13) Delete the employee who is having salary greater than 30,000.
+mysql> delete from employee where Salary>30000;
+Query OK, 4 rows affected (0.04 sec)
+
+
+14) Delete the information of employees whose name starts with‘s’.
+
+mysql> delete from employee where FName like "S%";
+Query OK, 3 rows affected (0.04 sec)
+
+
+15) Display all the employee from Pune alphabetically.
+
+mysql> select * from employee where Address="Pune" order by Address;
+Empty set (0.00 sec)
+
+
+
+mysql> select * from employee;
++------+---------+---------+--------+-----------+
+| Eid  | FName   | Address | Salary | Commision |
++------+---------+---------+--------+-----------+
+|    4 | Pooja   | Mumbai  |  19000 |      NULL |
+|    8 | Arjun   | Delhi   |  20000 |       900 |
+|   10 | Dulqeer | Kochi   |  30000 |      1000 |
++------+---------+---------+--------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> notee;
