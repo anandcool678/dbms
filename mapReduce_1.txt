@@ -1,0 +1,12 @@
+> db.sample.mapReduce(
+	function(){
+		for(var i in this.items){
+			emit(this.items[i].sku,this.items[i].price);
+		}
+	},
+	function(key,value) {return Array.sum(value);},
+	{out:"Result"}
+	)
+
+
+> db.Result.find()
